@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>순심여고 급식</title>
+<title>구전공 급식</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
@@ -59,7 +59,7 @@
 <body>
 <div class="header">
   <div>
-    <div class="header-school">순심여자고등학교</div>
+    <div class="header-school">구미전자공업고등학교</div>
     <div class="header-title">오늘의 급식</div>
   </div>
   <button class="dark-btn" id="darkBtn" onclick="toggleDark()">🌙</button>
@@ -77,7 +77,7 @@
 </div>
 <div class="meals" id="meals"></div>
 <div class="share-row" id="shareRow" style="display:none">
-  <button class="share-btn" onclick="copyMeal()">&#128203; 복사</button>
+  <button class="share-btn" onclick="copyMeal()">복사</button>
   <button class="share-btn fill" onclick="shareMeal()">공유하기 &rarr;</button>
 </div>
 <div class="foot">나이스 공식 데이터 · 실시간 연동</div>
@@ -85,9 +85,9 @@
 <script>
   const KEY='db8feffd37b74ab4bc5091be259069bd';
   const OFFICE='R10';
-  const SCHOOL='8750183';
+  const SCHOOL='1421116';
   const DOW=['일','월','화','수','목','금','토'];
-  const ICONS={'1':'🌅','2':'☀️','3':'🌆'};
+  const ICONS={'1':'','2':'','3':''};
   const NAMES={'1':'조식','2':'중식','3':'석식'};
 
   const saved=localStorage.getItem('dk');
@@ -135,9 +135,9 @@
       const text=await res.text();
       const data=JSON.parse(text);
       if(data.mealServiceDietInfo){cache[key]=data.mealServiceDietInfo[1].row;render(cache[key]);}
-      else if(data.RESULT&&data.RESULT.CODE==='INFO-200'){el.innerHTML='<div class="state"><div class="state-icon">🍽️</div>급식 정보가 없어요<br><span style="font-size:12px">주말이거나 방학일 수 있어요</span></div>';}
-      else{el.innerHTML='<div class="state"><div class="state-icon">⚠️</div>'+(data.RESULT?data.RESULT.MESSAGE:'오류')+'</div>';}
-    }catch(e){el.innerHTML='<div class="state"><div class="state-icon">😵</div>불러오기 실패<br><span style="font-size:12px">'+e.message+'</span></div>';}
+      else if(data.RESULT&&data.RESULT.CODE==='INFO-200'){el.innerHTML='<div class="state"><div class="state-icon"></div>급식 정보가 없어요<br><span style="font-size:12px">주말이거나 방학일 수 있어요</span></div>';}
+      else{el.innerHTML='<div class="state"><div class="state-icon"></div>'+(data.RESULT?data.RESULT.MESSAGE:'오류')+'</div>';}
+    }catch(e){el.innerHTML='<div class="state"><div class="state-icon"></div>불러오기 실패<br><span style="font-size:12px">'+e.message+'</span></div>';}
   }
 
   function render(rows){
@@ -152,7 +152,7 @@
   function getMealText(){
     var rows=cache[fmt(cur)];if(!rows)return'';
     var dateStr=cur.getFullYear()+'년 '+(cur.getMonth()+1)+'월 '+cur.getDate()+'일 '+DOW[cur.getDay()]+'요일';
-    var lines=['🍱 순심여고 급식',dateStr,''];
+    var lines=['구미전자공고 급식',dateStr,''];
     rows.forEach(function(row){
       lines.push('[ '+NAMES[row.MMEAL_SC_CODE]+' ]');
       row.DDISH_NM.replace(/<br\/>/g,'\n').replace(/<br>/g,'\n').split('\n').map(function(s){return s.replace(/\([\d.]+\)/g,'').trim();}).filter(Boolean).forEach(function(i){lines.push('• '+i);});
@@ -161,11 +161,11 @@
     return lines.join('\n').trim();
   }
 
-  window.copyMeal=function(){var t=getMealText();if(!t)return;navigator.clipboard.writeText(t).then(function(){toast('복사됐어요! 📋');});};
+  window.copyMeal=function(){var t=getMealText();if(!t)return;navigator.clipboard.writeText(t).then(function(){toast('복사됐어요');});};
   window.shareMeal=async function(){
     var t=getMealText();if(!t)return;
-    if(navigator.share){try{await navigator.share({title:'순심여고 급식',text:t});}catch(e){if(e.name!=='AbortError')toast('공유 실패 😅');}}
-    else{navigator.clipboard.writeText(t).then(function(){toast('텍스트 복사됐어요! 🔗');});}
+    if(navigator.share){try{await navigator.share({title:'구미전자공고 급식',text:t});}catch(e){if(e.name!=='AbortError')toast('공유 실패');}}
+    else{navigator.clipboard.writeText(t).then(function(){toast('복사됐어요');});}
   };
 
   function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
